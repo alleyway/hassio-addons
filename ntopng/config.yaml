@@ -43,7 +43,7 @@ options:
   local_net:
     - 192.168.1.0/24
 schema:
-  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  log_level: list(trace|debug|info|notice|warning|error|fatal)
   ssl: bool
   certfile: str
   keyfile: str
@@ -56,7 +56,7 @@ schema:
   custom_scripts: bool
   dns_mode: match(^[0-4]$)
   local_net:
-    - match(^(?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2}(\=[A-Z0-9_]+)?$)
-  dump_flows: "str?"
-  geoip_account_id: "int?"
-  geoip_license_key: "str?"
+    - match(^(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)/(?:3[0-2]|[12]?\d)(=[A-Z0-9_]+)?$)
+  dump_flows: str?
+  geoip_account_id: int?
+  geoip_license_key: str?

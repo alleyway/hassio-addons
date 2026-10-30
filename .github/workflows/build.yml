@@ -6,8 +6,8 @@ on:
   workflow_dispatch:          # allows manual runs
 
 env:
-  IMAGE_NAME: ghcr.io/alleyway/hassio-addon-ntopng
-  ARCHITECTURES: '["amd64","aarch64"]'   # match your config.yaml
+  IMAGE_NAME: hassio-addon-ntopng          # ← short name only (important!)
+  ARCHITECTURES: '["amd64","aarch64"]'
 
 jobs:
   init:
@@ -28,7 +28,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write          # needed for Cosign signing
+      id-token: write
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.init.outputs.matrix) }}
@@ -59,4 +59,6 @@ jobs:
           architectures: ${{ env.ARCHITECTURES }}
           image-name: ${{ env.IMAGE_NAME }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
-          image-tags: ''
+          image-tags: |
+            ${{ github.event.release.tag_name || github.ref_name }}
+            latest
