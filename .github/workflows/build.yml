@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: matrix
-        uses: home-assistant/builder/actions/prepare-multi-arch-matrix@v1   # pin a real tag
+        uses: home-assistant/builder/actions/prepare-multi-arch-matrix@2026.09.0  # 2026.09.0
         with:
           architectures: ${{ env.ARCHITECTURES }}
           image-name: ${{ env.IMAGE_NAME }}
@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build ${{ matrix.arch }}
-        uses: home-assistant/builder/actions/build-image@v1
+        uses: home-assistant/builder/actions/build-image@2026.09.0  # 2026.09.0
         with:
           arch: ${{ matrix.arch }}
           image: ${{ matrix.image }}
@@ -54,8 +54,9 @@ jobs:
       id-token: write
     steps:
       - name: Publish multi-arch manifest
-        uses: home-assistant/builder/actions/publish-multi-arch-manifest@v1
+        uses: home-assistant/builder/actions/publish-multi-arch-manifest@2026.09.0
         with:
           architectures: ${{ env.ARCHITECTURES }}
           image-name: ${{ env.IMAGE_NAME }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-tags: ''
