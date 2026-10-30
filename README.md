@@ -1,8 +1,8 @@
-# Li Tin O've Weedle custom Home Assistant add-on repository
+# Alleyway custom Home Assistant add-on repository
 
 The stuff I think I need or just want and  can't find somewhere else. ;-)
 
-[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Flitinoveweedle%2Fhassio-addons)
+[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Falleyway%2Fhassio-addons)
 
 ## Add-on documentation
 
@@ -10,7 +10,7 @@ Each addons comes with own DOCS.md documenting functions and configuration. Find
 
 ## Issues
 
-To report issues please use [Github Issues in the development repo](https://github.com/litinoveweedle/hassio-addons-dev/issues).
+To report issues please use [Github Issues in the development repo](https://github.com/alleyway/hassio-addons-dev/issues).
 
 ## Add-ons
 

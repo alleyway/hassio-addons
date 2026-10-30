@@ -152,9 +152,9 @@ Apache 2.0
 Copyright (c) 2025 Dominik Strnad
 
 [addon-badge]: https://my.home-assistant.io/badges/supervisor_addon.svg
-[addon]: https://my.home-assistant.io/redirect/supervisor_addon/?addon=ntopng&repository_url=https%3A%2F%2Fgithub.com%2Flitinoveweedle%2Fhassio-addons
-[contributors]: https://github.com/litinoveweedle/hassio-addons/graphs/contributors
+[addon]: https://my.home-assistant.io/redirect/supervisor_addon/?addon=ntopng&repository_url=https%3A%2F%2Fgithub.com%2Falleyway%2Fhassio-addons
+[contributors]: https://github.com/alleyway/hassio-addons/graphs/contributors
 [forum]: https://community.home-assistant.io/t/foss-ntopng-with-netflow-collector-hassio-addon/603491
-[litin]: https://github.com/litinoveweedle
-[issue]: https://github.com/litinoveweedle/hassio-addons-dev/issues
+[litin]: https://github.com/alleyway
+[issue]: https://github.com/alleyway/hassio-addons-dev/issues
 [semver]: http://semver.org/spec/v2.0.0.html

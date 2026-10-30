@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
-name: Li Tin O've Weedle Home Assistant add-on repository
-url: 'https://github.com/litinoveweedle/hassio-addons'
-maintainer: Dominik Strnad <litinoveweedle@gmail.com>
+name: Alleyway Home Assistant add-on repository
+url: 'https://github.com/alleyway/hassio-addons'
+maintainer: Alleyway <alleywayapps@gmail.com>
