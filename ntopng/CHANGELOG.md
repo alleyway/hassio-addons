@@ -1,5 +1,14 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 0.4.0
+
+- bumped minimum required Home Assistant version to 2026.1
+- added CONTRIBUTING.md with detailed release process instructions
+- added .editorconfig for consistent formatting across the repository
+- improved and clarified documentation in README.md, ntopng/README.md, and DOCS.md (typo fixes, grammar, changelog consistency)
+- updated actions/checkout to v7.0.1 in build workflow for alignment with official Home Assistant template
+- added "Contributing" section to root README.md
+
 ## 0.3.0
 
 - updated ntopng to 6.6
