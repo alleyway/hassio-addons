@@ -1,0 +1,26 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# shellcheck disable=SC2207
+# ==============================================================================
+# Li Tin O've Weedle Add-on: ntopng
+# Handles configuration
+# ==============================================================================
+
+if ! bashio::fs.directory_exists /var/run/ntopng; then
+    mkdir -p /var/run/ntopng
+fi
+
+if ! bashio::fs.directory_exists /data/data; then
+    mkdir -p /data/data
+fi
+
+if ! bashio::fs.directory_exists /data/pcap; then
+    mkdir -p /data/pcap
+fi
+
+if bashio::config.true 'custom_scripts'; then
+    if ! bashio::fs.directory_exists /data/scripts; then
+        mkdir -p /data/scripts
+        cp -R /usr/local/share/ntopng/scripts /data/scripts
+    fi
+fi

@@ -1,4 +1,4 @@
-# Li Tin O`ve Weedle Assistant Add-on: ntopng
+# Alleyway Assistant Add-on: ntopng
 
 This is an ntopng add-on for Home Assistant.
 It includes opensource community version of ntopng
@@ -28,8 +28,8 @@ ntopng add-on configuration:
 ```yaml
 log_level: info
 ssl: true
-certfile: certfile.pem
-keyfile: keyfile.pem
+certfile: fullchain.pem
+keyfile: privkey.pem
 leave_front_door_open: false
 ntop_auth: false
 zmq_loc_port: 5556
@@ -37,7 +37,7 @@ ntopng_loc_port: 3000
 netflow2ng_loc_port: 8080
 redis_loc_port: 6379
 custom_scripts: false
-dns_mode: 1
+dns_mode: 0
 local_net:
   - 192.168.1.0/24=LAN
   - 192.168.30.0/22=MGMT
@@ -137,12 +137,10 @@ You have several options to get them answered:
 - The Home Assistant [Community Forum][forum].
 - You could also [open an issue here][issue] GitHub.
 
-You could also [open an issue here][issue] GitHub.
-
 
 ## Authors & contributors
 
-The original setup of this repository is by [Li Tin O`ve Weedle][litin].
+The original setup of this repository is by Li Tin O`ve Weedle.
 
 
 ## License
@@ -155,6 +153,5 @@ Copyright (c) 2025 Dominik Strnad
 [addon]: https://my.home-assistant.io/redirect/supervisor_addon/?addon=ntopng&repository_url=https%3A%2F%2Fgithub.com%2Falleyway%2Fhassio-addons
 [contributors]: https://github.com/alleyway/hassio-addons/graphs/contributors
 [forum]: https://community.home-assistant.io/t/foss-ntopng-with-netflow-collector-hassio-addon/603491
-[litin]: https://github.com/alleyway
-[issue]: https://github.com/alleyway/hassio-addons-dev/issues
+[issue]: https://github.com/alleyway/hassio-addons/issues
 [semver]: http://semver.org/spec/v2.0.0.html

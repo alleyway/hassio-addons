@@ -8,6 +8,8 @@
 - GeoIP database persistent storage
 - fixed ntopng redirect urls
 - fixed ntopng requires restart loop
+- restored the complete build sources into this repository
+- fixed the `dump_flows` option being ignored by the startup script
 
 ## 0.2.0
 

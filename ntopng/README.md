@@ -1,6 +1,6 @@
 # Home Assistant Add-on: ntopng
 
-Community version of ntopng with opensource netflow colletor netflow2nd
+Community version of ntopng with opensource NetFlow collector netflow2ng
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]

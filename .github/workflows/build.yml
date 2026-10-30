@@ -6,16 +6,41 @@ on:
   workflow_dispatch:          # allows manual runs
 
 env:
-  IMAGE_NAME: hassio-addon-ntopng          # ← short name only (important!)
+  IMAGE_NAME: hassio-addon-ntopng          # short name only: the manifest action prefixes it
   ARCHITECTURES: '["amd64","aarch64"]'
+  BUILD_CONTEXT: ./ntopng
 
 jobs:
   init:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v7
+      - name: Read add-on version
+        id: version
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version="$(sed -n 's/^version:[[:space:]]*//p' "${BUILD_CONTEXT}/config.yaml" | head -n1)"
+          version="${version%\"}"
+          version="${version#\"}"
+          version="${version%\'}"
+          version="${version#\'}"
+
+          if [[ -z "${version}" ]]; then
+            echo "::error::Could not read version from ${BUILD_CONTEXT}/config.yaml"
+            exit 1
+          fi
+
+          if [[ -n "${RELEASE_TAG}" && "${RELEASE_TAG#v}" != "${version}" ]]; then
+            echo "::error::Release tag '${RELEASE_TAG}' does not match ${BUILD_CONTEXT}/config.yaml version '${version}'"
+            exit 1
+          fi
+
+          echo "Building version ${version}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
       - id: matrix
         uses: home-assistant/builder/actions/prepare-multi-arch-matrix@2026.09.0  # 2026.09.0
         with:
@@ -40,12 +65,13 @@ jobs:
           arch: ${{ matrix.arch }}
           image: ${{ matrix.image }}
           image-tags: |
-            ${{ github.event.release.tag_name || github.ref_name }}
+            ${{ needs.init.outputs.version }}
             latest
-          version: ${{ github.event.release.tag_name || github.ref_name }}
+          version: ${{ needs.init.outputs.version }}
           push: "true"
+          skip-existing: ${{ needs.init.outputs.version }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
-          context: ./ntopng
+          context: ${{ env.BUILD_CONTEXT }}
 
   manifest:
     needs: [init, build]
@@ -61,5 +87,6 @@ jobs:
           image-name: ${{ env.IMAGE_NAME }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
           image-tags: |
-            ${{ github.event.release.tag_name || github.ref_name }}
+            ${{ needs.init.outputs.version }}
             latest
+          skip-existing: ${{ needs.init.outputs.version }}

@@ -10,7 +10,7 @@ Each addons comes with own DOCS.md documenting functions and configuration. Find
 
 ## Issues
 
-To report issues please use [Github Issues in the development repo](https://github.com/alleyway/hassio-addons-dev/issues).
+To report issues please use [Github Issues](https://github.com/alleyway/hassio-addons/issues).
 
 ## Add-ons
 
