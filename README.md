@@ -23,14 +23,5 @@ This repository contains the following add-ons
 
 Opensource community version of ntopng with free netflow collector implementation netflow2ng
 
-### [taptap](./taptap)
-
-![Supports aarch64 Architecture][aarch64-shield]
-![Supports amd64 Architecture][amd64-shield]
-
-Tigo CCA Tap to MQTT implementation to get data from Tigo optimizers locally to Home Assistant
-
-
-
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
