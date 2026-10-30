@@ -45,6 +45,7 @@ jobs:
           version: ${{ github.event.release.tag_name || github.ref_name }}
           push: "true"
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+          context: ./ntopng
 
   manifest:
     needs: [init, build]
