@@ -9,7 +9,7 @@ ingress: true
 ingress_port: 0
 ingress_stream: true
 panel_icon: "mdi:help-network-outline"
-homeassistant: 2023.7.2
+homeassistant: 2026.1
 arch:
   - aarch64
   - amd64

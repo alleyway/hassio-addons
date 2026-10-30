@@ -1,11 +1,11 @@
 # Alleyway custom Home Assistant add-on repository
 
 
-[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Falleyway%2Fhassio-addons)
+[![Open your Home Assistant instance and show the add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Falleyway%2Fhassio-addons)
 
 ## Add-on documentation
 
-Each addons comes with own DOCS.md documenting functions and configuration. Find it either browsing this repo source or after addon installation in the Home Assistant addon page in the tab Documentation.
+Each add-on comes with its own DOCS.md documenting functions and configuration. Find it either by browsing this repo source or, after add-on installation, in the Home Assistant add-on page under the Documentation tab.
 
 ## Issues
 
@@ -27,3 +27,9 @@ Opensource community version of ntopng with free netflow collector implementatio
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development and release process details.
+
+Releases are driven by bumping the `version` in an add-on's `config.yaml`, updating its `CHANGELOG.md`, and creating a matching GitHub Release. The build workflow validates the version and publishes images using the official Home Assistant builder.

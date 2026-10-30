@@ -11,7 +11,7 @@ Community version of ntopng with opensource NetFlow collector netflow2ng
 ### Install the Add-On 
 
 
-Install this Add-On to your Home Assitant (tested on 2026.10.x)
+Install this Add-On to your Home Assistant (tested on 2026.10.x)
 
 
 Sign up for the https://www.maxmind.com/ GeoLite2 service to get the GeoLite2 City and ASN databases

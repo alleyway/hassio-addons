@@ -116,16 +116,18 @@ Password for the [MaxMind](https://www.maxmind.com/en/locate-my-ip-address) GeoI
 
 ## Changelog & Releases
 
-This repository keeps a change log using [GitHub's releases][releases]
-functionality.
+This repository maintains a [CHANGELOG.md](./CHANGELOG.md) file and also
+uses [GitHub's releases][releases] for tagged versions.
 
-Releases are based on [Semantic Versioning][semver], and use the format
-of `MAJOR.MINOR.PATCH`. In a nutshell, the version will be incremented
-based on the following:
+Releases follow [Semantic Versioning][semver] in the `MAJOR.MINOR.PATCH`
+format:
 
 - `MAJOR`: Incompatible or major changes.
 - `MINOR`: Backwards-compatible new features and enhancements.
 - `PATCH`: Backwards-compatible bugfixes and package updates.
+
+See `CHANGELOG.md` (and the corresponding GitHub release) for the list of
+changes in each version.
 
 
 ## Support
@@ -141,13 +143,14 @@ You have several options to get them answered:
 ## Authors & contributors
 
 The original setup of this repository is by Li Tin O`ve Weedle.
-
+Modified by Alleyway
 
 ## License
 
 Apache 2.0
 
 Copyright (c) 2025 Dominik Strnad
+Copyright (c) 2026 Alleyway
 
 [addon-badge]: https://my.home-assistant.io/badges/supervisor_addon.svg
 [addon]: https://my.home-assistant.io/redirect/supervisor_addon/?addon=ntopng&repository_url=https%3A%2F%2Fgithub.com%2Falleyway%2Fhassio-addons
