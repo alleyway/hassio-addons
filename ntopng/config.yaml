@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: ntopng
-version: "0.4.0"
+version: "0.5.0"
 slug: ntopng
 description: The SoHo FOSS & FREE ntopng with netflow collector
 url: "https://github.com/alleyway/hassio-addons/tree/main/ntopng"
@@ -18,7 +18,9 @@ services:
   - mysql:want
   # - influxdb:want
 map:
-  - ssl
+  - type: ssl
+  - type: app_config
+    read_only: false
 ports:
   80/tcp: null
   2055/udp: 2055
@@ -38,6 +40,7 @@ options:
   ntopng_loc_port: 3000
   netflow2ng_loc_port: 8080
   redis_loc_port: 6379
+  # Ignored. Kept so existing configurations still validate.
   custom_scripts: false
   dns_mode: 0
   local_net:

@@ -18,9 +18,54 @@ if ! bashio::fs.directory_exists /data/pcap; then
     mkdir -p /data/pcap
 fi
 
+# Rebuild a private runtime tree on every start. Stock scripts come from the
+# image; files in the public app config folder are copied on top and are never
+# overwritten by an update. /data/scripts is not the place to edit.
+stock_scripts="/usr/local/share/ntopng/scripts"
+runtime_scripts="/data/scripts"
+user_scripts="/config/scripts"
+
+if ! bashio::fs.file_exists /data/.scripts-overlay-migrated; then
+    if bashio::fs.directory_exists "${runtime_scripts}"; then
+        bashio::log.warning "Moving previous ${runtime_scripts} tree to /config/scripts.pre-overlay."
+        bashio::log.warning "Copy any scripts you edited into ${user_scripts}, then restart."
+        mkdir -p /config
+        rm -rf /config/scripts.pre-overlay
+        if ! mv "${runtime_scripts}" /config/scripts.pre-overlay; then
+            bashio::log.fatal "Failed to preserve ${runtime_scripts}; refusing to rebuild over it."
+            exit 1
+        fi
+    fi
+    touch /data/.scripts-overlay-migrated
+fi
+
 if bashio::config.true 'custom_scripts'; then
-    if ! bashio::fs.directory_exists /data/scripts; then
-        mkdir -p /data/scripts
-        cp -R /usr/local/share/ntopng/scripts /data/scripts
+    bashio::log.info "Option custom_scripts is deprecated and ignored. Put scripts in ${user_scripts}."
+fi
+
+if ! bashio::fs.directory_exists "${stock_scripts}"; then
+    bashio::log.warning "Stock ntopng scripts not found at ${stock_scripts}."
+else
+    rm -rf "${runtime_scripts}"
+    mkdir -p "${runtime_scripts}"
+    cp -a "${stock_scripts}/." "${runtime_scripts}/"
+
+    if ! bashio::fs.directory_exists "${user_scripts}"; then
+        mkdir -p "${user_scripts}"
+        cat > "${user_scripts}/README.md" <<'EOF'
+Custom ntopng scripts.
+
+Files here are copied over the stock scripts on every start. A file at the
+same relative path replaces the stock script. Anything else is added.
+
+Example: callbacks/checks/hosts/my_check.lua
+
+Restart the add-on after changing files. Do not edit /data/scripts; that
+tree is rebuilt from the image.
+EOF
+    elif [[ -n "$(find "${user_scripts}" -type f ! -name 'README.md' -print -quit)" ]]; then
+        bashio::log.info "Applying custom ntopng scripts from ${user_scripts}."
+        cp -a "${user_scripts}/." "${runtime_scripts}/"
+        rm -f "${runtime_scripts}/README.md"
     fi
 fi

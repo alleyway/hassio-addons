@@ -1,5 +1,12 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
+## 0.5.0
+
+- custom ntopng scripts now live in the public app config folder (`/config/scripts`) and are overlaid on the stock scripts at start
+- stock scripts are refreshed from the image on every start, so add-on updates are no longer shadowed by a one-time copy
+- a previous `/data/scripts` tree is kept once at `/config/scripts.pre-overlay` and is not loaded
+- `custom_scripts` is ignored and kept only so existing configurations still validate
+
 ## 0.4.0
 
 - bumped minimum required Home Assistant version to 2026.1

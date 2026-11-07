@@ -36,7 +36,6 @@ zmq_loc_port: 5556
 ntopng_loc_port: 3000
 netflow2ng_loc_port: 8080
 redis_loc_port: 6379
-custom_scripts: false
 dns_mode: 0
 local_net:
   - 192.168.1.0/24=LAN
@@ -91,8 +90,17 @@ Internal localhost only port for NetFlow2NG statistic web interface (accessible 
 ### Option: `redis_loc_port`
 Internal localhost only port for communication from ntopng to Redis. Default is `6379` change only in the case of the collision with other addons.
 
-### Option: `custom_scripts`
-Default ntopng script are copied during the start to the addon persistent data storage, new custom script can be added.
+### Custom scripts
+
+ntopng loads Lua scripts from a private runtime tree that is rebuilt on every start. Stock scripts always come from the current add-on image. Files you add under the add-on's public config folder are copied on top, so an update never overwrites them.
+
+Inside the add-on that folder is `/config/scripts`. On the host, open `app_configs` and the folder whose name ends in `ntopng` (older installs still show this as `addon_configs`). Use the File editor, Samba, or Studio Code Server. A shell is not required.
+
+Add a script, or override a stock script, by using the same relative path as in the ntopng scripts tree. A custom host check, for example, belongs at `callbacks/checks/hosts/my_check.lua`. A periodic callback belongs under `callbacks/minute/` or one of the other callback directories. Restart the add-on after changing files.
+
+Do not edit `/data/scripts`. That directory is rebuilt from the image on every start.
+
+The `custom_scripts` option is ignored. It remains accepted so existing configurations keep validating. If you previously edited scripts under the add-on data folder, that tree is kept once at `/config/scripts.pre-overlay` (next to `scripts`, not inside it, so it is not loaded). Copy anything you changed into `/config/scripts` and restart.
 
 ### Option: `dns_mode`
 DNS address resolution mode, see [ntopng cli -n options](https://www.ntop.org/guides/ntopng/cli_options/cli_options.html)

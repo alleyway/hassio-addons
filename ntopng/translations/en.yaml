@@ -18,8 +18,8 @@ configuration:
     name: ntop auth
     description: If using ingress authentication you can disable ntop internal authentication
   custom_scripts:
-    name: ntop custom scripts
-    description: Make ntop scripts accesible and writable in data/scripts directory
+    name: ntop custom scripts (deprecated)
+    description: Ignored. Put custom scripts in the app config scripts folder instead.
   dns_mode:
     name: ntop dns mode
     description: DNS addresses resolution mode

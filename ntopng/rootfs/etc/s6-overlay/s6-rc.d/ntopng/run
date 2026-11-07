@@ -59,7 +59,8 @@ options+=(--http-prefix="/ntopng_prefix")
 options+=(--instance-name="homeassistant.local")
 options+=(--user=root)
 
-if bashio::config.true 'custom_scripts'; then
+# Runtime tree is rebuilt by init-ntopng from the image plus /config/scripts.
+if bashio::fs.directory_exists /data/scripts; then
     options+=(--scripts-dir=/data/scripts)
     options+=(--callbacks-dir=/data/scripts/callbacks)
 fi
