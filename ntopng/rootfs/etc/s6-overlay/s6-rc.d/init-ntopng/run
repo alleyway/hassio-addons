@@ -65,6 +65,9 @@ tree is rebuilt from the image.
 EOF
     elif [[ -n "$(find "${user_scripts}" -type f ! -name 'README.md' -print -quit)" ]]; then
         bashio::log.info "Applying custom ntopng scripts from ${user_scripts}."
+        while IFS= read -r -d '' script_file; do
+            bashio::log.info "Copying custom script ${script_file#"${user_scripts}/"}"
+        done < <(find "${user_scripts}" -type f ! -name 'README.md' -print0 | sort -z)
         cp -a "${user_scripts}/." "${runtime_scripts}/"
         rm -f "${runtime_scripts}/README.md"
     fi

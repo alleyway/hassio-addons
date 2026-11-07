@@ -3,6 +3,7 @@
 ## 0.5.0
 
 - custom ntopng scripts now live in the public app config folder (`/config/scripts`) and are overlaid on the stock scripts at start
+- startup logs each custom script file copied from `/config/scripts`
 - stock scripts are refreshed from the image on every start, so add-on updates are no longer shadowed by a one-time copy
 - a previous `/data/scripts` tree is kept once at `/config/scripts.pre-overlay` and is not loaded
 - `custom_scripts` is ignored and kept only so existing configurations still validate
