@@ -4,11 +4,14 @@ on:
   release:
     types: [published]
   workflow_dispatch:          # allows manual runs
-
-env:
-  IMAGE_NAME: hassio-addon-ntopng          # short name only: the manifest action prefixes it
-  ARCHITECTURES: '["amd64","aarch64"]'
-  BUILD_CONTEXT: ./ntopng
+    inputs:
+      addon:
+        description: Add-on to build
+        required: true
+        type: choice
+        options:
+          - ntopng
+          - urbit
 
 jobs:
   init:
@@ -16,12 +19,85 @@ jobs:
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
       version: ${{ steps.version.outputs.version }}
+      image_name: ${{ steps.select.outputs.image_name }}
+      architectures: ${{ steps.select.outputs.architectures }}
+      build_context: ${{ steps.select.outputs.build_context }}
     steps:
       - uses: actions/checkout@v7.0.1
+      - name: Select add-on
+        id: select
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_ADDON: ${{ github.event.inputs.addon }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+
+          # Image name is the short name only. The manifest action prefixes the registry.
+          # Architectures must match the add-on's config.yaml.
+          addon_meta() {
+            case "$1" in
+              ntopng)
+                printf '%s\n' "hassio-addon-ntopng"
+                printf '%s\n' '["amd64","aarch64"]'
+                ;;
+              urbit)
+                printf '%s\n' "hassio-addon-urbit"
+                printf '%s\n' '["amd64"]'
+                ;;
+              *)
+                echo "::error::Unknown add-on '$1'. Add it to addon_meta in this workflow."
+                return 1
+                ;;
+            esac
+          }
+
+          if [[ "${EVENT_NAME}" == "workflow_dispatch" ]]; then
+            addon="${INPUT_ADDON}"
+          else
+            tag="${RELEASE_TAG#v}"
+            matches=()
+            for cfg in */config.yaml; do
+              version="$(sed -n 's/^version:[[:space:]]*//p' "${cfg}" | head -n1)"
+              version="${version%\"}"
+              version="${version#\"}"
+              version="${version%\'}"
+              version="${version#\'}"
+              if [[ -n "${version}" && "${version}" == "${tag}" ]]; then
+                matches+=("$(dirname "${cfg}")")
+              fi
+            done
+            if [[ ${#matches[@]} -ne 1 ]]; then
+              echo "::error::Release tag '${RELEASE_TAG}' matched ${#matches[@]} add-on(s) (${matches[*]:-}). It must match exactly one config.yaml version."
+              exit 1
+            fi
+            addon="${matches[0]}"
+          fi
+
+          if [[ ! -f "${addon}/config.yaml" ]]; then
+            echo "::error::No add-on at ${addon}/config.yaml"
+            exit 1
+          fi
+
+          meta="$(addon_meta "${addon}")"
+          image_name="$(printf '%s\n' "${meta}" | sed -n '1p')"
+          architectures="$(printf '%s\n' "${meta}" | sed -n '2p')"
+
+          echo "Selected add-on ${addon} (${image_name}, ${architectures})"
+          {
+            echo "addon=${addon}"
+            echo "image_name=${image_name}"
+            echo "build_context=./${addon}"
+            echo "architectures<<EOF"
+            echo "${architectures}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Read add-on version
         id: version
         env:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
+          BUILD_CONTEXT: ${{ steps.select.outputs.build_context }}
         run: |
           version="$(sed -n 's/^version:[[:space:]]*//p' "${BUILD_CONTEXT}/config.yaml" | head -n1)"
           version="${version%\"}"
@@ -44,8 +120,8 @@ jobs:
       - id: matrix
         uses: home-assistant/builder/actions/prepare-multi-arch-matrix@2026.09.0  # 2026.09.0
         with:
-          architectures: ${{ env.ARCHITECTURES }}
-          image-name: ${{ env.IMAGE_NAME }}
+          architectures: ${{ steps.select.outputs.architectures }}
+          image-name: ${{ steps.select.outputs.image_name }}
 
   build:
     needs: init
@@ -71,7 +147,7 @@ jobs:
           push: "true"
           skip-existing: ${{ needs.init.outputs.version }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
-          context: ${{ env.BUILD_CONTEXT }}
+          context: ${{ needs.init.outputs.build_context }}
 
   manifest:
     needs: [init, build]
@@ -83,8 +159,8 @@ jobs:
       - name: Publish multi-arch manifest
         uses: home-assistant/builder/actions/publish-multi-arch-manifest@2026.09.0
         with:
-          architectures: ${{ env.ARCHITECTURES }}
-          image-name: ${{ env.IMAGE_NAME }}
+          architectures: ${{ needs.init.outputs.architectures }}
+          image-name: ${{ needs.init.outputs.image_name }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
           image-tags: |
             ${{ needs.init.outputs.version }}

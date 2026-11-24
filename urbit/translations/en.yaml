@@ -1,0 +1,25 @@
+configuration:
+  log_level:
+    name: Log level
+    description: How much the add-on itself logs. Vere's own output is always shown.
+  loom:
+    name: Loom size
+    description: Memory size as a power of two. 31 is 2 GiB, the default. 32 is 4 GiB, 33 is 8 GiB. The host must have this much free.
+  snap_time:
+    name: Snapshot interval
+    description: Minutes between pier snapshots. Must be at least 1.
+  boot_comet:
+    name: Boot a comet
+    description: If no pier and no keyfile are present, boot a new comet. Ignored once a pier exists.
+  comet_name:
+    name: Comet pier name
+    description: Directory name for a new comet. Not the ship's network name.
+  log_code:
+    name: Log login code
+    description: Also print the Landscape login code in the add-on log. It is always written to login-code.txt in the app config folder.
+  remove_keyfile:
+    name: Remove keyfile
+    description: Delete the matching ship.key from the app config folder once that pier exists.
+network:
+  80/tcp: Landscape web interface
+  34343/udp: Ames ship-to-ship (keep the host port at 34343)

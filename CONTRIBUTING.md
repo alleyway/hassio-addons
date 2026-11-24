@@ -23,24 +23,25 @@ The single source of truth for an add-on's version is the `version:` field in it
 ### Recommended Release Steps
 
 1. Make your code, Dockerfile, or configuration changes.
-2. Bump the version in `ntopng/config.yaml` (e.g. from `"0.3.0"` to `"0.3.1"` or `"0.4.0"`).
+2. Bump the version in that add-on's `config.yaml` (e.g. `ntopng/config.yaml` or `urbit/config.yaml`).
    - Follow [Semantic Versioning](https://semver.org/):
      - PATCH for bug fixes and dependency updates.
      - MINOR for new features.
      - MAJOR for breaking changes.
-3. Add an entry at the top of `ntopng/CHANGELOG.md` describing the changes.
+3. Add an entry at the top of that add-on's `CHANGELOG.md` describing the changes.
 4. Commit your changes to the `main` branch (via PR if desired).
 5. Create a new GitHub Release:
-   - Tag: `vX.Y.Z` (or `X.Y.Z`) — it **must** match the version in `config.yaml` (the workflow validates this).
+   - Tag: `vX.Y.Z` (or `X.Y.Z`) — it **must** match the version in that add-on's `config.yaml` (the workflow validates this).
+   - The tag must match exactly one add-on. If two add-ons share a version, the build fails rather than guessing.
    - Use the release notes to summarize changes (you can link to or copy from `CHANGELOG.md`).
 6. The "Build and Publish" workflow will trigger on the published release:
-   - It reads the version from `config.yaml`.
-   - Validates the tag matches the version.
-   - Builds multi-architecture images using the official Home Assistant builder actions.
-   - Pushes to `ghcr.io/alleyway/hassio-addon-ntopng` with the version and `latest` tags.
-   - Publishes the multi-arch manifest.
+   - It selects the add-on whose `version` matches the tag.
+   - Validates the tag matches that version.
+   - Builds images for the architectures listed for that add-on, using the official Home Assistant builder actions.
+   - Pushes to `ghcr.io/alleyway/hassio-addon-<slug>` with the version and `latest` tags.
+   - Publishes the multi-arch manifest (or the single-arch manifest, for an add-on that only builds one architecture).
 
-You can also trigger the workflow manually via **Actions → Build and Publish → Run workflow**.
+You can also trigger the workflow manually via **Actions → Build and Publish → Run workflow** and pick the add-on.
 
 ### After Release
 
@@ -53,7 +54,7 @@ You can also trigger the workflow manually via **Actions → Build and Publish �
 1. Create a new directory (e.g. `myaddon/`).
 2. Add the standard files: `config.yaml`, `Dockerfile`, `rootfs/`, `DOCS.md`, `README.md`, `icon.png`, `logo.png`, `CHANGELOG.md`.
 3. Update the root `repository.yaml` if needed (usually not).
-4. Extend `.github/workflows/build.yml` to handle the new add-on (or adopt the multi-app pattern from the [official apps-example](https://github.com/home-assistant/apps-example) if you add several).
+4. Add the add-on to the `addon_meta` case in `.github/workflows/build.yml` (image name and architectures). A release tag that matches its `config.yaml` version builds that add-on.
 5. Update the root `README.md`.
 
 ## Style & Tooling

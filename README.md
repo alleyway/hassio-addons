@@ -25,7 +25,15 @@ The base of this was taken from https://github.com/litinoveweedle/hassio-addons 
 
 Opensource community version of ntopng with free netflow collector implementation netflow2ng
 
+### [Urbit](./urbit)
+
+![Supports aarch64 Architecture][aarch64-no-shield]
+![Supports amd64 Architecture][amd64-shield]
+
+Run one Urbit ship with the official Vere runtime (`tloncorp/vere`). linux/amd64 only. Experimental.
+
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[aarch64-no-shield]: https://img.shields.io/badge/aarch64-no-red.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
 
 ## Contributing

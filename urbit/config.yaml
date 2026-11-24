@@ -1,0 +1,56 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
+name: Urbit
+version: "0.1.0"
+slug: urbit
+description: Run an Urbit ship with the official Vere runtime
+url: "https://github.com/alleyway/hassio-addons/tree/main/urbit"
+image: "ghcr.io/alleyway/hassio-addon-urbit"
+stage: experimental
+arch:
+  # tloncorp/vere is published for linux/amd64 only.
+  - amd64
+# A keyfile or an existing pier is required before the first start.
+boot: manual
+# Vere snapshots on shutdown. Give it time to finish. Maximum is 300.
+timeout: 180
+# A copy of a live pier is not a safe backup, and two copies must never boot.
+backup: cold
+homeassistant: "2026.1"
+# The image has no s6-overlay. Docker's init reaps Vere's worker process.
+init: true
+map:
+  # Covers the image VOLUME /urbit. The pier lives here, not in an anonymous volume.
+  - type: data
+    path: /urbit
+  - type: app_config
+    read_only: false
+  - type: share
+    read_only: true
+ports:
+  80/tcp: 8080
+  34343/udp: 34343
+ports_description:
+  80/tcp: Landscape web interface
+  34343/udp: Ames ship-to-ship (keep the host port at 34343)
+webui: "http://[HOST]:[PORT:80]/"
+ulimits:
+  nofile:
+    soft: 65535
+    hard: 65535
+options:
+  log_level: info
+  loom: 31
+  snap_time: 2
+  boot_comet: false
+  comet_name: comet
+  log_code: false
+  remove_keyfile: true
+schema:
+  log_level: list(trace|debug|info|notice|warning|error|fatal)
+  # 31 is 2 GiB, the Vere default. 33 is 8 GiB, the current maximum.
+  loom: int(20,33)
+  snap_time: int(1,1440)
+  boot_comet: bool
+  comet_name: match(^[a-z0-9][a-z0-9-]{0,62}$)
+  log_code: bool
+  remove_keyfile: bool
